@@ -38,4 +38,5 @@ model STUDENT {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   delflag      Boolean  @default(false)
+  user             User @default(STUDENT)
 }
