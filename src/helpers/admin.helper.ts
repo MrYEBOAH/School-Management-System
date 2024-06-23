@@ -1,4 +1,4 @@
-import { ADMIN, Prisma, PrismaClient } from "@prisma/client";
+import { ADMIN, Prisma } from "@prisma/client";
 import prisma from "../Utils/prisma.Utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
