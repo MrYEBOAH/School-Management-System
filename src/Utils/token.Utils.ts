@@ -1,5 +1,7 @@
 // Import the required library
 import Jwt from "jsonwebtoken";
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 // Interface for JWT payload (optional, for better type safety)
 interface JwtPayload {
@@ -9,16 +11,16 @@ interface JwtPayload {
 
 // Sign the JWT token
 export const signToken = (payload: JwtPayload): string => {
-    return Jwt.sign(payload, process.env.JWT_SECRET, {
+    return Jwt.sign(payload, process.env.JWT_SECRET!, {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
 };
 
 // Set an invalid token (optional, adjust based on your use case)
 export const CheckToken = (request: any, response: any, NextFunction: any) => {
-    const bearerHearder = request.Headers['auth-token'];
-    if (bearerHearder) {
-        const bearer = bearerHearder.split(' ');
+    const bearerHeader = request.Headers['auth-token'];
+    if (bearerHeader) {
+        const bearer = bearerHeader.split(' ');
         const bearerToken = bearer[1];
         request.token = bearerToken;
         NextFunction();
