@@ -1,9 +1,18 @@
 import { ADMIN, Prisma } from "@prisma/client";
 import prisma from "../Utils/prisma.Utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import AdminCreateInput  from '@prisma/client';
-
-interface AdminCreateInput{};
+interface AdminCreateInput{
+    id: String
+    name: string,
+    email: string,
+    telephone_number: number,
+    admin_Id: string,
+    password: string,
+    createdAt: Date,
+    updatedAt: Date,
+    delflag: boolean,
+    user: any
+};
 
 const signUp = async (userSignUp: AdminCreateInput): Promise<any> => {
     try {
