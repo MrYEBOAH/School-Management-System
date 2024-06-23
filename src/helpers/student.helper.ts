@@ -1,17 +1,9 @@
 import { STUDENT, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import prisma from "src/Utils/prisma.Utils";
+import StudentCreateInput from '@prisma/client';
 
-
-interface StudentCreateInput {
-    id: string,
-    index_number: string
-    password: string
-    createdAt: Date
-    updatedAt: Date
-    delflag: boolean
-    user: any
-}
+interface StudentCreateInput {}
 
 const signUp = async (userSignUp: StudentCreateInput): Promise<any> => {
     try {

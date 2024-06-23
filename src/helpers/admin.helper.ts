@@ -1,19 +1,9 @@
 import { ADMIN, Prisma } from "@prisma/client";
 import prisma from "../Utils/prisma.Utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import AdminCreateInput  from '@prisma/client';
 
-interface AdminCreateInput {
-    id: string,
-    name: string,
-    email: string,
-    telephone_number: Number,
-    admin_Id: string,
-    password: string,
-    createdAt: Date,
-    updatedAt: Date,
-    delflag: boolean,
-    user: any
-}
+interface AdminCreateInput{};
 
 const signUp = async (userSignUp: AdminCreateInput): Promise<any> => {
     try {
@@ -29,6 +19,31 @@ const signUp = async (userSignUp: AdminCreateInput): Promise<any> => {
         console.error('Failed to create admin:', error);
         //Rethrow the error or handle it according to your application's error handling strategy
         throw error;
+    }
+};
+
+const logIn = async (admin_Id:string): Promise<AdminCreateInput | null> => {
+    try {
+        const adminLogIn = await prisma.aDMIN.findUnique({
+            where: { admin_Id }
+        });
+        return adminLogIn;
+    } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+             // Handle known Prisma client errors (e.g., not found)
+             if ( error.code === "P2025") {
+                // Check for "Record not found" error code
+                console.error(" Loging in with admin_Id ", admin_Id," not found.");
+                return null; // Indicate login failure (not found)
+             } else {
+                console.error(" Prisma Admin finding error: ", error.message);
+                throw error; // Re-throw for further handling
+             }
+        } else {
+            // Handle other unexpected errors
+            console.error( "Unexpected error: ", error);
+            throw error; // Re-throw for further handling...
+         }
     }
 };
 
@@ -134,6 +149,7 @@ const deleteAdmin = async (id:string): Promise<boolean> => {
 // Export all functions
 export {
     signUp,
+    logIn,
     getAdminAccount,
     getAdminById,
     updateAdmin,
