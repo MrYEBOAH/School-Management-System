@@ -1,46 +1,43 @@
-import { ADMIN, Prisma } from "@prisma/client";
-import prisma from "../Utils/prisma.Utils";
+import { STUDENT, Prisma } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import prisma from "src/Utils/prisma.Utils";
 
-interface AdminCreateInput {
+
+interface StudentCreateInput {
     id: string,
-    name: string,
-    email: string,
-    telephone_number: Number,
-    admin_Id: string,
-    password: string,
-    createdAt: Date,
-    updatedAt: Date,
-    delflag: boolean,
+    index_number: string
+    password: string
+    createdAt: Date
+    updatedAt: Date
+    delflag: boolean
     user: any
 }
 
-const signUp = async (userSignUp: AdminCreateInput): Promise<any> => {
+const signUp = async (userSignUp: StudentCreateInput): Promise<any> => {
     try {
-        const admin = await prisma.aDMIN.create({
-                // ... data to create a ADMIN
-            data: userSignUp as unknown as Prisma.ADMINCreateInput
-
+        const student = await prisma.sTUDENT.create({
+            // ... data to create a STUDENT...  
+            data: userSignUp as unknown as Prisma.STUDENTCreateInput
         });
-        return admin;
+        return student;
 
     } catch (error) {
         // console error message...
-        console.error('Failed to create admin:', error);
+        console.error('Failed to create student: ', error);
         //Rethrow the error or handle it according to your application's error handling strategy
         throw error;
     }
 };
 
-// Fetch zero or more ADMINS
-const getAdminAccount = async (): Promise<any[]> => {
+// Fetch zero or more STUDENTS...
+const getStudentsAccount = async (): Promise<any[]> => {
     try {
-        const admins = await prisma.aDMIN.findMany({});
-        return admins;
+        const students = await prisma.sTUDENT.findMany({});
+        return students;
     } catch (error) {
-        if(error instanceof PrismaClientKnownRequestError) {
-      // Handle known Prisma client errors (e.g., validation errors)
-            console.error("Prisma Admin finding error: ", error.message);
+        if (error instanceof PrismaClientKnownRequestError) {
+            // Handle known Prisma client errors (e.g., validation errors)
+            console.error("Prisma Student Finding error: ", error.message);
         } else {
             // Handle other unexpected errors
             console.error("Unexpected error: ", error);
@@ -48,53 +45,53 @@ const getAdminAccount = async (): Promise<any[]> => {
         throw error;
     }
 };
-
 // Get ADMIN BY {id}...
-const getAdminById = async (id:string): Promise<any> => {
+const getStudentById = async (id: string): Promise<any> => {
     try {
-        const admin1 = await prisma.aDMIN.findUnique({
+        const student1 = await prisma.sTUDENT.findUnique({
             where: { id },
         });
-        return admin1;
+        return student1;
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             // Handle known Prisma client errors (e.g., not found)
             if (error.code === "P2025") {
-                // Check for "Record not found" error code
-                console.error("Admin with ID ", id , " not found.");
+
+                // Check for "Record not found" error code...
+                console.error("Student with ID", id, " not found.");
                 // Or throw a specific error for "not found"
                 return null;
             } else {
-                console.error("Prisma Admin finding error: ", error.message);
+                console.error("Prisma Student finding error: ", error.message);
             }
         } else {
             // Handle other unexpected errors
             console.error("Unexpected error: ", error);
+
         }
         // Re-throw the error for further handling (optional)
-        throw error; 
+        throw error;
     }
 }
 
 // UPDATING ADMIN Details ...{ Update request }
-
-const updateAdmin = async (id:string, data: Partial<ADMIN>): Promise<any> => {
+const updateStudent = async (id:string, data: Partial<STUDENT>): Promise<any> => {
     try {
-        const UpdateAdmin = await prisma.aDMIN.update({
+        const UpdateStudent = await prisma.sTUDENT.update({
             where: { id },
             data,
         });
-        return UpdateAdmin;
+        return UpdateStudent;
     } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
             // Handle known Prisma client errors (e.g., not found)
             if (error.code === "P2025") {
                 // Check for "Record not found" error code
-                console.error("Admin with ID ", id , " not found.");
+                console.error("Student with ID ", id , " not found.");
                 // Or throw a specific error for "not found"
                 return null;
             } else {
-                console.error("Prisma Admin finding error: ", error.message);
+                console.error("Prisma Student finding error: ", error.message);
             }
         } else {
             // Handle other unexpected errors
@@ -105,10 +102,11 @@ const updateAdmin = async (id:string, data: Partial<ADMIN>): Promise<any> => {
     }
 }
 
-const deleteAdmin = async (id:string): Promise<boolean> => {
+// DELETING STUDENT ACCOUNT...
+const deleteStudent = async (id:string): Promise<boolean> => {
     try {
-        // Attempt to delete the admin using prisma.aDMIN.delete()
-        await prisma.aDMIN.delete({ where: { id } });
+        // Attempt to delete the student using prisma.sTUDENT.delete()
+        await prisma.sTUDENT.delete({ where: { id } });
         // If deletion succeeds, return true..
         return true;
     } catch (error) {
@@ -116,11 +114,11 @@ const deleteAdmin = async (id:string): Promise<boolean> => {
             // Handle known Prisma errors (e.g., "Record not found")
             if ( error.code === "P2003") {
                 // Check for "Record to delete not found" code
-                console.error("Admin with ID ", id , " not found.");
+                console.error("Student with ID ", id , " not found.");
                 // Indicate deletion failure (not found)
                 return false;
             } else{
-                console.error("Prisma Admin deletion error: ", error.message);
+                console.error("Prisma Student deletion error: ", error.message);
                 throw error; // Re-throw for further handling
             }
         } else{
@@ -131,11 +129,10 @@ const deleteAdmin = async (id:string): Promise<boolean> => {
     }
 }
 
-// Export all functions
 export {
     signUp,
-    getAdminAccount,
-    getAdminById,
-    updateAdmin,
-    deleteAdmin
+    getStudentsAccount,
+    getStudentById,
+    updateStudent,
+    deleteStudent
 }
