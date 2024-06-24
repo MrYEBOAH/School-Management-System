@@ -21,7 +21,7 @@ app.use((err: ErrorWithStatus, req: Request, res: Response, next: NextFunction) 
     });
 });
 
-import indexRoute from "../src/routes/admin.route";
+import indexRoute from "./src/routes/admin.route";
 app.use(indexRoute);
 
 app.listen(PORT, () => {
